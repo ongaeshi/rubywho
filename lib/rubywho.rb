@@ -13,7 +13,7 @@ class RubyWho
           io.puts "== #{obj.inspect}.who? =="
           RubyWho.new(obj, io, filter).display(level)
         else
-          io.puts "#{obj.inspect}.who? #{RubyWho.new(obj, io, filter).obj_str}"
+          io.puts "#{obj.inspect} #: #{RubyWho.new(obj, io, filter).obj_str}"
         end
       end
     end
@@ -49,7 +49,7 @@ class RubyWho
   def initialize(obj, io, filter_re)
     @obj = obj
     @io = io
-    @filter_re = filter_re
+    @filter_re = filter_re.is_a?(String) ? Regexp.new(filter_re) : filter_re
   end
 
   def obj_str
