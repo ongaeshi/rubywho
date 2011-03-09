@@ -11,9 +11,9 @@ class RubyWho
       tap do |obj|
         if (level.nil? || level > 0)
           io.puts "== #{obj.inspect}.who? =="
-          RubyWho.new(obj, io, filter).display(level)
+          RubyWho.new(obj, io, filter, kind).display(level)
         else
-          io.puts "#{obj.inspect} #: #{RubyWho.new(obj, io, filter).obj_str}"
+          io.puts "#{obj.inspect} #: #{RubyWho.new(obj, io, filter, kind).obj_str}"
         end
       end
     end
@@ -46,30 +46,33 @@ class RubyWho
   IGNORE = [RubyWho::Adapter]
   COLS = 80
 
-  def initialize(obj, io, filter_re)
+  def initialize(obj, io, filter_re, kind)
     @obj = obj
     @io = io
     @filter_re = filter_re.is_a?(String) ? Regexp.new(filter_re) : filter_re
+    @kind = kind
   end
 
   def obj_str
-    if @obj.is_a?(Module)
-      klass = @obj
+    klass = @obj.is_a?(Module) ? @obj : @obj.class
+    
+    if singleton?
       klass.to_s + '(%s)' % klass.class
     else
-      klass = @obj.class
       klass.to_s + '#'
     end
   end
 
   def display(n = nil)
-    if @obj.is_a?(Module)
-      limit(@obj.ancestors, n).each do |klass|
+    obj_klass = @obj.is_a?(Module) ? @obj : @obj.class
+
+    if singleton?
+      limit(obj_klass.ancestors, n).each do |klass|
         @io.puts klass.to_s + '(%s)' % klass.class
         display_methods(klass.singleton_methods(false))
       end
     else
-      limit(@obj.class.ancestors, n).each do |klass|
+      limit(obj_klass.ancestors, n).each do |klass|
         @io.puts klass.to_s + '#'
         display_methods(klass.public_instance_methods(false))
       end
@@ -78,6 +81,10 @@ class RubyWho
 
   private
   
+  def singleton?
+    @obj.is_a?(Module) && @kind != :instance || @kind == :singleton
+  end
+
   def limit(ancestors, n)
     as = ancestors.reject{|a| IGNORE.include?(a) }
     n.nil? ? as : as[0, n]

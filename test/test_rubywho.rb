@@ -80,6 +80,58 @@ class TestRubyWho < Test::Unit::TestCase
     assert_no_match(/clone/, @io.string)
   end
 
+  def test_who_singleton?
+    @io.string = ""
+    1.who_singleton?
+    v1 = @io.string
+    
+    @io.string = ""
+    Fixnum.who_singleton?
+    v2 = @io.string
+
+    assert_equal v1.to_a[1..-1], v2.to_a[1..-1]
+    assert_match /Fixnum\(Class\)/, v1
+    assert_no_match /Fixnum#/, v1
+
+    @io.string = ""
+    1.who_s?
+    v1 = @io.string
+    
+    @io.string = ""
+    Fixnum.who_s?
+    v2 = @io.string
+
+    assert_equal v1.to_a[1..-1], v2.to_a[1..-1]
+    assert_match /Fixnum\(Class\)/, v1
+    assert_no_match /Fixnum#/, v1
+  end
+
+  def test_who_instance?
+    @io.string = ""
+    1.who_instance?
+    v1 = @io.string
+    
+    @io.string = ""
+    Fixnum.who_instance?
+    v2 = @io.string
+
+    assert_equal v1.to_a[1..-1], v2.to_a[1..-1]
+    assert_no_match /Fixnum\(Class\)/, v1
+    assert_match /Fixnum#/, v1
+
+    @io.string = ""
+    1.who_i?
+    v1 = @io.string
+    
+    @io.string = ""
+    Fixnum.who_i?
+    v2 = @io.string
+
+    assert_equal v1.to_a[1..-1], v2.to_a[1..-1]
+    assert_no_match /Fixnum\(Class\)/, v1
+    assert_match /Fixnum#/, v1
+  end
+
   def test_who0?
     @io.string = ""
     1.who0?
