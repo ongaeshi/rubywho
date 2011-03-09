@@ -70,6 +70,20 @@ class TestRubyWho < Test::Unit::TestCase
     assert_match(/== 3\.who\? ==\nFixnum/, @io.string)
   end
 
+  def test_who0?
+    @io.string = ""
+    1.who0?
+    assert_match(/1\.who\? Fixnum#/, @io.string)
+
+    @io.string = ""
+    [1, 2, 3].who0?
+    assert_match(/\[1, 2, 3\]\.who\? Array#/, @io.string)
+
+    @io.string = ""
+    Array.who0?
+    assert_match(/Array\.who\? Array\(Class\)/, @io.string)
+  end
+
   def test_who1?
     @io.string = ""
     1.who1?

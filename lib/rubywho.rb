@@ -9,8 +9,12 @@ class RubyWho
   module Adapter
     def who_io?(io, filter = nil, level = nil, kind = nil)
       tap do |obj|
-        io.puts "== #{obj.inspect}.who? =="
-        RubyWho.new(obj, io, filter).display(level)
+        if (level.nil? || level > 0)
+          io.puts "== #{obj.inspect}.who? =="
+          RubyWho.new(obj, io, filter).display(level)
+        else
+          io.puts "#{obj.inspect}.who? #{RubyWho.new(obj, io, filter).obj_str}"
+        end
       end
     end
     
@@ -46,6 +50,16 @@ class RubyWho
     @obj = obj
     @io = io
     @filter_re = filter_re
+  end
+
+  def obj_str
+    if @obj.is_a?(Module)
+      klass = @obj
+      klass.to_s + '(%s)' % klass.class
+    else
+      klass = @obj.class
+      klass.to_s + '#'
+    end
   end
 
   def display(n = nil)
