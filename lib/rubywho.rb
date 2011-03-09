@@ -7,28 +7,56 @@
 
 class RubyWho
   module Adapter
-    def who?(n = nil, filter = nil)
-      tap{|x| puts "== who? #{x.inspect} =="; RubyWho.new(x, filter).display(n) }
+    def who_io?(io, filter = nil, level = nil, kind = nil)
+      tap do |obj|
+        io.puts "== #{obj.inspect}.who? =="
+        RubyWho.new(obj, io, filter).display(level)
+      end
+    end
+    
+    def who?(filter = nil, level = nil, kind = nil)
+      who_io?($stdout, filter, level, kind)
+    end
+
+    def who_singleton?(filter = nil, level = nil)
+      who?(filter, level, :singleton)
+    end
+
+    alias :who_s? :who_singleton?
+
+    def who_instance?(filter = nil, level = nil)
+      who?(filter, level, :instance)
+    end
+
+    alias :who_i? :who_instance?
+
+    def who0?(filter = nil)
+      who?(filter, 0)
+    end
+    
+    def who1?(filter = nil)
+      who?(filter, 1)
     end
   end
   
   IGNORE = [RubyWho::Adapter]
   COLS = 80
 
-  def initialize(obj, filter_re = nil)
+  def initialize(obj, io, filter_re)
     @obj = obj
+    @io = io
     @filter_re = filter_re
   end
 
   def display(n = nil)
     if @obj.is_a?(Module)
       limit(@obj.ancestors, n).each do |klass|
-        puts klass.to_s + '(%s)' % klass.class
+        @io.puts klass.to_s + '(%s)' % klass.class
         display_methods(klass.singleton_methods(false))
       end
     else
       limit(@obj.class.ancestors, n).each do |klass|
-        puts klass.to_s + '#'
+        @io.puts klass.to_s + '#'
         display_methods(klass.public_instance_methods(false))
       end
     end
@@ -45,7 +73,7 @@ class RubyWho
     alpha, op = methods.sort.partition{|m| m =~ /\A[_A-Za-z]/o }
     display_each_methods(alpha, COLS)
     display_each_methods(op, COLS)
-    puts 'v' + '-' * (COLS - 1)
+    @io.puts 'v' + '-' * (COLS - 1)
   end
 
   def display_each_methods(methods, cols)
@@ -53,13 +81,13 @@ class RubyWho
     methods.each do |m|
       next if @filter_re && @filter_re !~ m
       if (buf + m).length > cols
-        puts buf.sub(/\,\s*\Z/, '')
+        @io.puts buf.sub(/\,\s*\Z/, '')
         buf = '| ' + m + ', '
       else
         buf << m << ', '
       end
     end
-    puts buf.sub(/\,\s*\Z/, '') unless buf == '| '
+    @io.puts buf.sub(/\,\s*\Z/, '') unless buf == '| '
   end
 end
 Object.send(:include, RubyWho::Adapter)
