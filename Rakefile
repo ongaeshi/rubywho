@@ -15,8 +15,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "rubywho"
   gem.homepage = "http://github.com/ongaeshi/rubywho"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{Ruby running on the object's class hierarchy, methods of each class to display a legible.}
+  gem.description = %Q{Ruby running on the object's class hierarchy, methods of each class to display a legible.}
   gem.email = "ongaeshi0621@gmail.com"
   gem.authors = ["ongaeshi"]
   # Include your dependencies below. Runtime dependencies are required when using your gem,
