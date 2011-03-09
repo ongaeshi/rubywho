@@ -25,6 +25,7 @@ Gem::Specification.new do |s|
     "Rakefile",
     "VERSION",
     "lib/rubywho.rb",
+    "rubywho.gemspec",
     "test/helper.rb",
     "test/test_rubywho.rb"
   ]
