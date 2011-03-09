@@ -2,6 +2,14 @@
 
 Ruby running on the object's class hierarchy, methods of each class to display a legible.
 
+## Install
+
+    # Windows
+    $ gem.bat install rubywho
+    
+    # OSX / Linux
+    $ sudo gem install rubywho
+
 ## Basic Sample
 
 ### Code
