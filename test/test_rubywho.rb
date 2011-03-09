@@ -2,21 +2,87 @@ require 'test/unit'
 require File.join(File.dirname(__FILE__), "../lib/rubywho")
 require 'stringio'
 
-class TestRubywho < Test::Unit::TestCase
-  def test_who?
-#     %w[a b c].who?
-#     1.who?
-#     "string".who?
-#     String.who?
-#     [1, "cat", "cat", 2, "cat", 3].who?.select{|i| i == 'cat'}.who?.count.who?
+class TestRubyWho < Test::Unit::TestCase
+  def setup
+    @io = StringIO.new
+    @old_stdout = $stdout
+    $stdout = @io
   end
 
   def test_who_io?
     io = StringIO.new
 
+    io.string = ""
     1.who_io?(io)
+    assert_match(/== 1\.who\? ==/, io.string)
+    assert_match(/Fixnum/, io.string)
+    assert_match(/Integer/, io.string)
 
-    assert_equal <<EOF, io.string
+    io.string = ""
+    "string".who_io?(io)
+    assert_match(/== "string"\.who\? ==/, io.string)
+    assert_match(/String/, io.string)
+    assert_match(/lines, ljust, lstrip/, io.string)
+    assert_match(/Enumerable/, io.string)
+
+    io.string = ""
+    String.who_io?(io)
+    assert_match(/String\(Class\)/, io.string)
+
+    io.string = ""
+    [1, "cat", "cat", 2, "cat", 3].who_io?(io).select{|i| i == 'cat'}.who_io?(io).count.who_io?(io)
+    assert_match(/== \[1, "cat", "cat", 2, "cat", 3\]\.who\? ==\nArray/, io.string)
+    assert_match(/== \["cat", "cat", "cat"\]\.who\? ==\nArray/, io.string)
+    assert_match(/== 3\.who\? ==\nFixnum/, io.string)
+  end
+
+  def test_who?
+    @io.string = ""
+    who?
+    assert_match /TestRubyWho/, @io.string
+    
+    @io.string = ""
+    %w[a b c].who?
+    assert_match /Array/, @io.string
+
+    @io.string = ""
+    1.who?
+    assert_match(/== 1\.who\? ==/, @io.string)
+    assert_match(/Fixnum/, @io.string)
+    assert_match(/Integer/, @io.string)
+
+    @io.string = ""
+    "string".who?
+    assert_match(/== "string"\.who\? ==/, @io.string)
+    assert_match(/String/, @io.string)
+    assert_match(/lines, ljust, lstrip/, @io.string)
+    assert_match(/Enumerable/, @io.string)
+    
+    @io.string = ""
+    String.who?
+    assert_match(/String\(Class\)/, @io.string)
+
+    @io.string = ""
+    [1, "cat", "cat", 2, "cat", 3].who?.select{|i| i == 'cat'}.who?.count.who?
+    String.who_io?(@io)
+    assert_match(/== \[1, "cat", "cat", 2, "cat", 3\]\.who\? ==\nArray/, @io.string)
+    assert_match(/== \["cat", "cat", "cat"\]\.who\? ==\nArray/, @io.string)
+    assert_match(/== 3\.who\? ==\nFixnum/, @io.string)
+  end
+
+  def test_who1?
+    @io.string = ""
+    1.who1?
+    assert_match(/== 1\.who\? ==/, @io.string)
+    assert_no_match(/Integer/, @io.string)
+  end
+
+  def teardown
+    $stdout = @old_stdout
+  end
+end
+
+WHO_1 = <<EOF
 == 1.who? ==
 Fixnum#
 | abs, div, divmod, even?, fdiv, id2name, modulo, odd?, quo, size, to_f, to_s
@@ -51,21 +117,4 @@ Kernel#
 | ==, ===, =~
 v-------------------------------------------------------------------------------
 EOF
-    io.string = ""
-    "string".who_io?(io)
-    assert_match(/== "string"\.who\? ==/, io.string)
-    assert_match(/String/, io.string)
-    assert_match(/lines, ljust, lstrip/, io.string)
-    assert_match(/Enumerable/, io.string)
 
-    io.string = ""
-    String.who_io?(io)
-    assert_match(/String\(Class\)/, io.string)
-
-    io.string = ""
-    [1, "cat", "cat", 2, "cat", 3].who_io?(io).select{|i| i == 'cat'}.who_io?(io).count.who_io?(io)
-    assert_match(/== \[1, "cat", "cat", 2, "cat", 3\]\.who\? ==\nArray/, io.string)
-    assert_match(/== \["cat", "cat", "cat"]\.who\? ==\nArray/, io.string)
-    assert_match(/== 3\.who\? ==\nFixnum/, io.string)
-  end
-end
