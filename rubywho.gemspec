@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{rubywho}
-  s.version = "0.2.0"
+  s.version = "0.3.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["ongaeshi"]
@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.extra_rdoc_files = [
     "ChangeLog.markdown",
     "LICENSE.txt",
-    "README.rdoc"
+    "README.markdown"
   ]
   s.files = [
     ".document",
@@ -23,11 +23,13 @@ Gem::Specification.new do |s|
     "Gemfile",
     "Gemfile.lock",
     "LICENSE.txt",
-    "README.rdoc",
+    "README.markdown",
     "Rakefile",
     "VERSION",
     "lib/rubywho.rb",
     "rubywho.gemspec",
+    "test/advance_sample.rb",
+    "test/basic_sample.rb",
     "test/helper.rb",
     "test/test_rubywho.rb"
   ]
@@ -37,6 +39,8 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.6}
   s.summary = %q{Ruby running on the object's class hierarchy, methods of each class to display a legible.}
   s.test_files = [
+    "test/advance_sample.rb",
+    "test/basic_sample.rb",
     "test/helper.rb",
     "test/test_rubywho.rb"
   ]
