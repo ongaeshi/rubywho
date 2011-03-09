@@ -4,13 +4,20 @@ Ruby running on the object's class hierarchy, methods of each class to display a
 
 ## Basic Sample
 
+### Code
+
     require 'rubygems'
     require 'rubywho'
     
+    # Hello.
     1.who?
     "string".who?
     String.who?
     [1, 2, 3].who?
+    
+    # Method filtering.
+    require 'active_record'
+    ActiveRecord::Base.who?(/sql/)
 
 ### Result
 
@@ -233,6 +240,211 @@ Ruby running on the object's class hierarchy, methods of each class to display a
     Kernel(Module)
     v-------------------------------------------------------------------------------
 
+## Advance Sample
+
+### Code
+
+    require 'rubygems'
+    require 'rubywho'
+    
+    # Filtering
+    1.who?("to_")
+    
+    # Limit disp level.
+    1.who?(nil, 3)
+    
+    # Shortcut.
+    1.who1?
+    puts "== who0? display 1-line. =="
+    1.who0?
+    
+    # Force display instance_method.
+    1.who_instance?
+    Fixnum.who_i?
+    
+    # Force display singleton_method.
+    1.who_singleton?
+    Fixnum.who_s?
+    
+    # Method chain.
+    puts "== who0? method chain. =="
+    [1, "cat", "cat", 2, "cat", 3].who0?.select{|i| i == 'cat'}.who0?.count.who0?
+
+### Result
+
+    == 1.who? ==
+    Fixnum#
+    | to_f, to_s, to_sym
+    v-------------------------------------------------------------------------------
+    Integer#
+    | to_bn, to_i, to_int, to_r, to_yaml
+    v-------------------------------------------------------------------------------
+    Precision#
+    v-------------------------------------------------------------------------------
+    Numeric#
+    | to_int
+    v-------------------------------------------------------------------------------
+    Comparable#
+    v-------------------------------------------------------------------------------
+    Object#
+    | to_yaml, to_yaml_properties, to_yaml_style
+    v-------------------------------------------------------------------------------
+    Kernel#
+    | to_a, to_enum, to_s
+    v-------------------------------------------------------------------------------
+    == 1.who? ==
+    Fixnum#
+    | abs, div, divmod, even?, fdiv, id2name, modulo, odd?, power!, quo, rdiv
+    | rpower, size, to_f, to_s, to_sym, zero?
+    | %, &, *, **, +, -, -@, /, <, <<, <=, <=>, ==, >, >=, >>, [], ^, |, ~
+    v-------------------------------------------------------------------------------
+    Integer#
+    | ceil, chr, denominator, downto, even?, floor, gcd, gcdlcm, integer?, lcm, next
+    | numerator, odd?, ord, pred, round, succ, taguri, taguri=, times, to_bn, to_i
+    | to_int, to_r, to_yaml, truncate, upto
+    v-------------------------------------------------------------------------------
+    Precision#
+    | prec, prec_f, prec_i
+    v-------------------------------------------------------------------------------
+    == 1.who? ==
+    Fixnum#
+    | abs, div, divmod, even?, fdiv, id2name, modulo, odd?, power!, quo, rdiv
+    | rpower, size, to_f, to_s, to_sym, zero?
+    | %, &, *, **, +, -, -@, /, <, <<, <=, <=>, ==, >, >=, >>, [], ^, |, ~
+    v-------------------------------------------------------------------------------
+    == who0? display 1-line. ==
+    1 #: Fixnum#
+    == 1.who? ==
+    Fixnum#
+    | abs, div, divmod, even?, fdiv, id2name, modulo, odd?, power!, quo, rdiv
+    | rpower, size, to_f, to_s, to_sym, zero?
+    | %, &, *, **, +, -, -@, /, <, <<, <=, <=>, ==, >, >=, >>, [], ^, |, ~
+    v-------------------------------------------------------------------------------
+    Integer#
+    | ceil, chr, denominator, downto, even?, floor, gcd, gcdlcm, integer?, lcm, next
+    | numerator, odd?, ord, pred, round, succ, taguri, taguri=, times, to_bn, to_i
+    | to_int, to_r, to_yaml, truncate, upto
+    v-------------------------------------------------------------------------------
+    Precision#
+    | prec, prec_f, prec_i
+    v-------------------------------------------------------------------------------
+    Numeric#
+    | abs, ceil, coerce, div, divmod, eql?, fdiv, floor, integer?, modulo, nonzero?
+    | quo, remainder, round, singleton_method_added, step, to_int, truncate, zero?
+    | +@, -@, <=>
+    v-------------------------------------------------------------------------------
+    Comparable#
+    | between?
+    | <, <=, ==, >, >=
+    v-------------------------------------------------------------------------------
+    Object#
+    | taguri, taguri=, to_yaml, to_yaml_properties, to_yaml_style
+    v-------------------------------------------------------------------------------
+    Kernel#
+    | __id__, __send__, class, clone, display, dup, enum_for, eql?, equal?, extend
+    | freeze, frozen?, hash, id, inspect, instance_eval, instance_exec, instance_of?
+    | instance_variable_defined?, instance_variable_get, instance_variable_set
+    | instance_variables, is_a?, kind_of?, method, methods, nil?, object_id
+    | private_methods, protected_methods, public_methods, respond_to?, send
+    | singleton_methods, taint, tainted?, tap, to_a, to_enum, to_s, type, untaint
+    | ==, ===, =~
+    v-------------------------------------------------------------------------------
+    == Fixnum.who? ==
+    Fixnum#
+    | abs, div, divmod, even?, fdiv, id2name, modulo, odd?, power!, quo, rdiv
+    | rpower, size, to_f, to_s, to_sym, zero?
+    | %, &, *, **, +, -, -@, /, <, <<, <=, <=>, ==, >, >=, >>, [], ^, |, ~
+    v-------------------------------------------------------------------------------
+    Integer#
+    | ceil, chr, denominator, downto, even?, floor, gcd, gcdlcm, integer?, lcm, next
+    | numerator, odd?, ord, pred, round, succ, taguri, taguri=, times, to_bn, to_i
+    | to_int, to_r, to_yaml, truncate, upto
+    v-------------------------------------------------------------------------------
+    Precision#
+    | prec, prec_f, prec_i
+    v-------------------------------------------------------------------------------
+    Numeric#
+    | abs, ceil, coerce, div, divmod, eql?, fdiv, floor, integer?, modulo, nonzero?
+    | quo, remainder, round, singleton_method_added, step, to_int, truncate, zero?
+    | +@, -@, <=>
+    v-------------------------------------------------------------------------------
+    Comparable#
+    | between?
+    | <, <=, ==, >, >=
+    v-------------------------------------------------------------------------------
+    Object#
+    | taguri, taguri=, to_yaml, to_yaml_properties, to_yaml_style
+    v-------------------------------------------------------------------------------
+    Kernel#
+    | __id__, __send__, class, clone, display, dup, enum_for, eql?, equal?, extend
+    | freeze, frozen?, hash, id, inspect, instance_eval, instance_exec, instance_of?
+    | instance_variable_defined?, instance_variable_get, instance_variable_set
+    | instance_variables, is_a?, kind_of?, method, methods, nil?, object_id
+    | private_methods, protected_methods, public_methods, respond_to?, send
+    | singleton_methods, taint, tainted?, tap, to_a, to_enum, to_s, type, untaint
+    | ==, ===, =~
+    v-------------------------------------------------------------------------------
+    == 1.who? ==
+    Fixnum(Class)
+    | induced_from
+    v-------------------------------------------------------------------------------
+    Integer(Class)
+    | induced_from, yaml_tag_subclasses?
+    v-------------------------------------------------------------------------------
+    Precision(Module)
+    | included
+    v-------------------------------------------------------------------------------
+    Numeric(Class)
+    v-------------------------------------------------------------------------------
+    Comparable(Module)
+    v-------------------------------------------------------------------------------
+    Object(Class)
+    | yaml_tag_subclasses?
+    v-------------------------------------------------------------------------------
+    Kernel(Module)
+    | Array, Float, Integer, String, URI, __method__, abort, at_exit, autoload
+    | autoload?, binding, block_given?, callcc, caller, catch, chomp, chomp!, chop
+    | chop!, eval, exec, exit, exit!, fail, fork, format, getc, gets
+    | global_variables, gsub, gsub!, iterator?, lambda, load, local_variables, loop
+    | method_missing, open, p, print, printf, proc, putc, puts, raise, rand
+    | readline, readlines, require, scan, select, set_trace_func, sleep, split
+    | sprintf, srand, sub, sub!, syscall, system, test, throw, trace_var, trap
+    | untrace_var, warn
+    | `
+    v-------------------------------------------------------------------------------
+    == Fixnum.who? ==
+    Fixnum(Class)
+    | induced_from
+    v-------------------------------------------------------------------------------
+    Integer(Class)
+    | induced_from, yaml_tag_subclasses?
+    v-------------------------------------------------------------------------------
+    Precision(Module)
+    | included
+    v-------------------------------------------------------------------------------
+    Numeric(Class)
+    v-------------------------------------------------------------------------------
+    Comparable(Module)
+    v-------------------------------------------------------------------------------
+    Object(Class)
+    | yaml_tag_subclasses?
+    v-------------------------------------------------------------------------------
+    Kernel(Module)
+    | Array, Float, Integer, String, URI, __method__, abort, at_exit, autoload
+    | autoload?, binding, block_given?, callcc, caller, catch, chomp, chomp!, chop
+    | chop!, eval, exec, exit, exit!, fail, fork, format, getc, gets
+    | global_variables, gsub, gsub!, iterator?, lambda, load, local_variables, loop
+    | method_missing, open, p, print, printf, proc, putc, puts, raise, rand
+    | readline, readlines, require, scan, select, set_trace_func, sleep, split
+    | sprintf, srand, sub, sub!, syscall, system, test, throw, trace_var, trap
+    | untrace_var, warn
+    | `
+    v-------------------------------------------------------------------------------
+    == who0? method chain. ==
+    [1, "cat", "cat", 2, "cat", 3] #: Array#
+    ["cat", "cat", "cat"] #: Array#
+    3 #: Fixnum#
+    
 ## Contributing to rubywho
  
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
