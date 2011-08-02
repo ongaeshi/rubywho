@@ -23,7 +23,7 @@ class TestRubyWho < Test::Unit::TestCase
     assert_match(/== "string"\.who\? ==/, io.string)
     assert_match(/String/, io.string)
     assert_match(/lines, ljust, lstrip/, io.string)
-    assert_match(/Enumerable/, io.string)
+    # assert_match(/Enumerable/, io.string)
 
     io.string = ""
     String.who_io?(io)
@@ -56,8 +56,8 @@ class TestRubyWho < Test::Unit::TestCase
     assert_match(/== "string"\.who\? ==/, @io.string)
     assert_match(/String/, @io.string)
     assert_match(/lines, ljust, lstrip/, @io.string)
-    assert_match(/Enumerable/, @io.string)
-    
+    # assert_match(/Enumerable/, @io.string)
+
     @io.string = ""
     String.who?
     assert_match(/String\(Class\)/, @io.string)
@@ -89,7 +89,7 @@ class TestRubyWho < Test::Unit::TestCase
     Fixnum.who_singleton?
     v2 = @io.string
 
-    assert_equal v1.to_a[1..-1], v2.to_a[1..-1]
+    assert_equal v1.split("\n")[1..-1], v2.split("\n")[1..-1]
     assert_match /Fixnum\(Class\)/, v1
     assert_no_match /Fixnum#/, v1
 
@@ -101,7 +101,7 @@ class TestRubyWho < Test::Unit::TestCase
     Fixnum.who_s?
     v2 = @io.string
 
-    assert_equal v1.to_a[1..-1], v2.to_a[1..-1]
+    assert_equal v1.split("\n")[1..-1], v2.split("\n")[1..-1]
     assert_match /Fixnum\(Class\)/, v1
     assert_no_match /Fixnum#/, v1
   end
@@ -115,7 +115,7 @@ class TestRubyWho < Test::Unit::TestCase
     Fixnum.who_instance?
     v2 = @io.string
 
-    assert_equal v1.to_a[1..-1], v2.to_a[1..-1]
+    assert_equal v1.split("\n")[1..-1], v2.split("\n")[1..-1]
     assert_no_match /Fixnum\(Class\)/, v1
     assert_match /Fixnum#/, v1
 
@@ -127,7 +127,7 @@ class TestRubyWho < Test::Unit::TestCase
     Fixnum.who_i?
     v2 = @io.string
 
-    assert_equal v1.to_a[1..-1], v2.to_a[1..-1]
+    assert_equal v1.split("\n")[1..-1], v2.split("\n")[1..-1]
     assert_no_match /Fixnum\(Class\)/, v1
     assert_match /Fixnum#/, v1
   end
