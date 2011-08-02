@@ -99,7 +99,7 @@ class RubyWho
 
   def display_each_methods(methods, cols)
     buf = '| '
-    methods.each do |m|
+    methods.map(&:to_s).each do |m|
       next if @filter_re && @filter_re !~ m
       if (buf + m).length > cols
         @io.puts buf.sub(/\,\s*\Z/, '')
