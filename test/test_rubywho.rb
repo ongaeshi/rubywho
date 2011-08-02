@@ -1,5 +1,5 @@
 require 'test/unit'
-require File.join(File.dirname(__FILE__), "../lib/rubywho")
+require 'rubywho'
 require 'stringio'
 
 class TestRubyWho < Test::Unit::TestCase
